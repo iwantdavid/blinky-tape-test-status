@@ -16,7 +16,7 @@ public:
     character->set_next(next_character);
   }
 
-  void test_char_constructor() {
+  void test_constructor() {
     setup();
     assert( character->get_character() == 'h' );
     assert( next_character->get_character() == 'n' );
@@ -41,7 +41,7 @@ public:
 
 void char_test(){
   CharTest *test = new CharTest();
-  test->test_char_constructor();
+  test->test_constructor();
   test->test_char_is_last_when_last();
   test->test_char_is_last_when_not_last();
   test->test_get_next_when_not_last();

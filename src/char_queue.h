@@ -6,7 +6,7 @@
 class CharQueue {
 private:
   int mSize;
-  Char *head;
+  // Char *head;
 
 public:
   CharQueue() {
@@ -17,20 +17,21 @@ public:
     return mSize;
   }
 
-  char pop() {
-    char character = head->get_character();
-    head = head->get_next();
+  void pop() {
+  //   char character = head->get_character();
+  //   head = head->get_next();
+  //   mSize--;
     mSize--;
-    return character;
+  //   return character;
   }
 
   void push(char character) {
-    Char *next = new Char(character);
-    Char *current = head;
-    while (mSize > 0 && !current->last()) {
-      current = current->get_next();
-    }
-    current->set_next(next);
+  //   Char *next = new Char(character);
+  //   Char *current = head;
+  //   while (mSize > 0 && !current->last()) {
+  //     current = current->get_next();
+  //   }
+  //   current->set_next(next);
     mSize++;
   }
 };
