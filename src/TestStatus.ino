@@ -1,5 +1,6 @@
 #include <FastSPI_LED2.h>
 #include <Animation.h>
+#include "char_queue.h"
 
 #define LED_COUNT 60
 struct CRGB leds[LED_COUNT];
@@ -12,6 +13,7 @@ struct CRGB leds[LED_COUNT];
 
 long last_time;
 int pulse_interval;
+CharQueue *read_buffer;
 
 void setup()
 {
@@ -124,11 +126,23 @@ void test_sequence() {
   LEDS.show();
 }
 
+void read() {
+  while(Serial.available() > 0) {
+    char character = Serial.read();
+
+    if(character == 't') {
+      return;
+    } else {
+      read_buffer->push(character);
+    }
+  }
+}
+
 void loop() {
-  if(Serial.available() > 2) {
-    char mode  = Serial.read();
-    char color = Serial.read();
-    Serial.read(); // EOF char?
+  read();
+  if(read_buffer->size() >= 2) {
+    char mode  = read_buffer->pop();
+    char color = read_buffer->pop();
 
     solid_color(color);
     pulse_interval = parse_pulse_interval(mode);
