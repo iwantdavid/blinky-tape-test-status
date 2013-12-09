@@ -12,3 +12,4 @@
 *.la
 *.a
 .build
+test/run_all
