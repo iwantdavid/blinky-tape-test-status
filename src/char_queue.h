@@ -1,38 +1,55 @@
 #ifndef _CHAR_QUEUE
 #define _CHAR_QUEUE
 
+#include <string>
 #include "char.h"
 
 class CharQueue {
 private:
   int mSize;
-  // Char *head;
+  Char *mHead;
+  Char *mTail;
 
 public:
   CharQueue() {
     mSize = 0;
+    mHead = new Char();
+    mTail = mHead;
+  }
+
+  void clear() {
+    mSize = 0;
+    mHead = new Char();
+    mTail = mHead;
+  }
+
+  char pop() {
+    Char *realHead = mHead->get_next();
+    char character = '\0';
+
+    if(realHead) {
+      character = realHead->get_character();
+      mHead->set_next(realHead->get_next());
+      mSize--;
+    }
+
+    return character;
+  }
+
+  void push(char character) {
+    Char *next = new Char(character);
+    mTail->set_next(next);
+    mTail = next;
+
+    mSize++;
   }
 
   int size() {
     return mSize;
   }
 
-  void pop() {
-  //   char character = head->get_character();
-  //   head = head->get_next();
-  //   mSize--;
-    mSize--;
-  //   return character;
-  }
-
-  void push(char character) {
-  //   Char *next = new Char(character);
-  //   Char *current = head;
-  //   while (mSize > 0 && !current->last()) {
-  //     current = current->get_next();
-  //   }
-  //   current->set_next(next);
-    mSize++;
+  std::string to_string() {
+    return "";
   }
 };
 

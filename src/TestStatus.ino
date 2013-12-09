@@ -19,6 +19,7 @@ void setup()
 {
   last_time = millis();
   pulse_interval = 0;
+  read_buffer = new CharQueue();
 
   LEDS.addLeds<WS2811, PIN_SIGNAL, GRB>(leds, LED_COUNT); // this configures the BlinkyBoard - leave as is.
   LEDS.showColor(CRGB(0, 0, 0));
@@ -120,8 +121,9 @@ void set_rgb(int r, int g, int b) {
 }
 
 void test_sequence() {
+  int interval = 254 / LED_COUNT;
   for(int i=0; i < LED_COUNT; i += 1) {
-    leds[i] = CRGB(0, 0, 254);
+    leds[i] = CRGB(254 - (i * interval), 0, (i * interval));
   }
   LEDS.show();
 }
@@ -131,7 +133,9 @@ void read() {
     char character = Serial.read();
 
     if(character == 't') {
-      return;
+      read_buffer->clear();
+    else if (character == 'e') {
+      Serial.println(read_buffer->to_string());
     } else {
       read_buffer->push(character);
     }

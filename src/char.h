@@ -1,6 +1,8 @@
 #ifndef _CHAR
 #define _CHAR
 
+#include <stdio.h>
+
 class Char {
 private:
   bool last;
@@ -8,9 +10,16 @@ private:
   Char *next;
 
 public:
+  Char() {
+    last = true;
+    next = NULL;
+    character = '\0';
+  }
+
   Char(char pcharacter) {
     last = true;
     character = pcharacter;
+    next = 0;
   }
 
   char get_character() {
