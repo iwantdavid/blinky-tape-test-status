@@ -18,9 +18,7 @@ public:
   }
 
   void clear() {
-    mSize = 0;
-    mHead = new Char();
-    mTail = mHead;
+    while(this->pop()) {}
   }
 
   char pop() {
@@ -30,6 +28,7 @@ public:
     if(realHead) {
       character = realHead->get_character();
       mHead->set_next(realHead->get_next());
+      delete realHead;
       mSize--;
     }
 
@@ -46,10 +45,6 @@ public:
 
   int size() {
     return mSize;
-  }
-
-  std::string to_string() {
-    return "";
   }
 };
 

@@ -96,16 +96,14 @@ public:
     assert( char_queue->size() == 0 );
   }
 
-  void test_to_string_with_nothing() {
+  void test_clear_after_two_pushes() {
     setup();
 
-    assert(char_queue->to_string() == "");
-  }
-
-  void test_to_string_after_push() {
-    setup();
-    char_queue->push('c');
-    assert(char_queue->to_string() == "c");
+    char_queue->push('h');
+    char_queue->push('r');
+    char_queue->clear();
+    assert( char_queue->pop() == '\0' );
+    assert( char_queue->size() == 0 );
   }
 };
 
@@ -125,6 +123,5 @@ void char_queue_test(){
   test->test_size_after_a_pop();
   test->test_double_pop_after_double_push();
   test->test_clear_with_nothing();
-  test->test_to_string_with_nothing();
-  test->test_to_string_after_push();
+  test->test_clear_after_two_pushes();
 }
