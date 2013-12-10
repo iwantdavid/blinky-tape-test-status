@@ -1,4 +1,5 @@
-ino build
+#!/bin/bash
+
 if [ $? == 0 ]; then
   ino upload
   while [ $? != 0 ]; do
