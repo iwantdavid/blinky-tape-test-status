@@ -18,6 +18,7 @@ public:
 
   void clear() {
     while(this->pop()) {}
+    mTail = mHead;
   }
 
   char pop() {
