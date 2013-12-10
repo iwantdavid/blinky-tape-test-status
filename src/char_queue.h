@@ -1,7 +1,6 @@
 #ifndef _CHAR_QUEUE
 #define _CHAR_QUEUE
 
-#include <string>
 #include "char.h"
 
 class CharQueue {

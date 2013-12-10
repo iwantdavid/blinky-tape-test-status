@@ -7,7 +7,7 @@ test:
 	./.build/run_all
 
 clean:
-	rm .build/run_all
+	rm -f .build/run_all
 	ino clean
 
 upload: build

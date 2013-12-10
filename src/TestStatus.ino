@@ -134,8 +134,6 @@ void read() {
 
     if(character == 't') {
       read_buffer->clear();
-    else if (character == 'e') {
-      Serial.println(read_buffer->to_string());
     } else {
       read_buffer->push(character);
     }
