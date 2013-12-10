@@ -1,127 +1,113 @@
-#include "../src/char_queue.h"
-#include <stdio.h>
-#include <assert.h>
+#ifndef CharQueueTest_h
+#define CharQueueTest_h
 
-class CharQueueTest {
+#include <cppunit/extensions/HelperMacros.h>
+#include "../src/char_queue.h"
+
+class CharQueueTest : public CPPUNIT_NS::TestFixture {
+  CPPUNIT_TEST_SUITE( CharQueueTest );
+  CPPUNIT_TEST( test_push );
+  CPPUNIT_TEST( test_pop_with_nothing );
+  CPPUNIT_TEST( test_pop_after_push );
+  CPPUNIT_TEST( test_pop_after_two_pushes );
+  CPPUNIT_TEST( test_size_when_empty );
+  CPPUNIT_TEST( test_size_with_one_item );
+  CPPUNIT_TEST( test_size_with_two_items );
+  CPPUNIT_TEST( test_size_after_a_push_and_a_pop );
+  CPPUNIT_TEST( test_size_after_two_pushes_and_a_pop );
+  CPPUNIT_TEST( test_size_after_a_pop );
+  CPPUNIT_TEST( test_double_pop_after_double_push );
+  CPPUNIT_TEST( test_clear_with_nothing );
+  CPPUNIT_TEST( test_clear_after_two_pushes );
+  CPPUNIT_TEST_SUITE_END();
+
 public:
   CharQueue *char_queue;
 
-  CharQueueTest() {
-    setup();
-  }
-
-  void setup() {
+  void setUp() {
     char_queue = new CharQueue();
   }
 
-  void test_constructor() {
-    setup();
+  void tearDown() {
+    delete char_queue;
   }
 
   void test_push() {
-    setup();
     char_queue->push('h');
   }
 
   void test_pop_with_nothing() {
-    setup();
-    assert( !char_queue->pop() );
+    CPPUNIT_ASSERT( !char_queue->pop() );
   }
 
   void test_pop_after_push() {
-    setup();
     char_queue->push('h');
-    assert( char_queue->pop() == 'h' );
+    CPPUNIT_ASSERT_EQUAL('h', char_queue->pop());
   }
 
   void test_pop_after_two_pushes() {
-    setup();
     char_queue->push('x');
     char_queue->push('y');
-    assert( char_queue->pop() == 'x' );
+    CPPUNIT_ASSERT_EQUAL( 'x', char_queue->pop() );
   }
 
   void test_size_when_empty() {
-    setup();
-    assert( char_queue->size() == 0 );
+    CPPUNIT_ASSERT_EQUAL( 0, char_queue->size() );
   }
 
   void test_size_with_one_item() {
-    setup();
     char_queue->push('h');
-    assert( char_queue->size() == 1 );
+    CPPUNIT_ASSERT_EQUAL( 1, char_queue->size() );
   }
 
   void test_size_with_two_items() {
-    setup();
     char_queue->push('h');
     char_queue->push('x');
-    assert( char_queue->size() == 2 );
+    CPPUNIT_ASSERT_EQUAL( 2, char_queue->size() );
   }
 
   void test_size_after_a_push_and_a_pop() {
-    setup();
     char_queue->push('h');
     char_queue->pop();
-    assert( char_queue->size() == 0 );
+    CPPUNIT_ASSERT_EQUAL( 0, char_queue->size() );
   }
 
   void test_size_after_two_pushes_and_a_pop() {
-    setup();
     char_queue->push('h');
     char_queue->push('x');
     char_queue->pop();
-    assert( char_queue->size() == 1 );
+    CPPUNIT_ASSERT_EQUAL( 1, char_queue->size() );
   }
 
   void test_size_after_a_pop() {
-    setup();
     char_queue->pop();
-    assert( char_queue->size() == 0 );
+    CPPUNIT_ASSERT_EQUAL( 0, char_queue->size() );
   }
 
   void test_double_pop_after_double_push() {
-    setup();
     char_queue->push('f');
     char_queue->push('b');
-    assert( char_queue->pop() == 'f' );
-    assert( char_queue->pop() == 'b' );
+    CPPUNIT_ASSERT_EQUAL( 'f', char_queue->pop() );
+    CPPUNIT_ASSERT_EQUAL( 'b', char_queue->pop() );
   }
 
   void test_clear_with_nothing() {
-    setup();
 
     char_queue->clear();
-    assert( char_queue->pop() == '\0' );
-    assert( char_queue->size() == 0 );
+    CPPUNIT_ASSERT_EQUAL( '\0', char_queue->pop() );
+    CPPUNIT_ASSERT_EQUAL( 0, char_queue->size() );
   }
 
   void test_clear_after_two_pushes() {
-    setup();
 
     char_queue->push('h');
     char_queue->push('r');
     char_queue->clear();
-    assert( char_queue->pop() == '\0' );
-    assert( char_queue->size() == 0 );
+    CPPUNIT_ASSERT_EQUAL( '\0', char_queue->pop() );
+    CPPUNIT_ASSERT_EQUAL( 0, char_queue->size() );
   }
 };
 
+CPPUNIT_TEST_SUITE_REGISTRATION( CharQueueTest );
 
-void char_queue_test(){
-  CharQueueTest *test = new CharQueueTest();
-  test->test_constructor();
-  test->test_push();
-  test->test_pop_with_nothing();
-  test->test_pop_after_push();
-  test->test_pop_after_two_pushes();
-  test->test_size_when_empty();
-  test->test_size_with_one_item();
-  test->test_size_with_two_items();
-  test->test_size_after_a_push_and_a_pop();
-  test->test_size_after_two_pushes_and_a_pop();
-  test->test_size_after_a_pop();
-  test->test_double_pop_after_double_push();
-  test->test_clear_with_nothing();
-  test->test_clear_after_two_pushes();
-}
+#endif
