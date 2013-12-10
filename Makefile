@@ -2,9 +2,7 @@ build:
 	ino build
 
 test:
-	mkdir -p .build
-	g++ -o .build/run_all spec/run_all.cpp -lcppunit
-	./.build/run_all
+	cd spec && make test
 
 clean:
 	rm -f .build/run_all
