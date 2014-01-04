@@ -10,6 +10,7 @@ class CharQueueTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST( test_pop_with_nothing );
   CPPUNIT_TEST( test_pop_after_push );
   CPPUNIT_TEST( test_pop_after_two_pushes );
+  CPPUNIT_TEST( test_pop_after_two_pushes_and_a_pop );
   CPPUNIT_TEST( test_size_when_empty );
   CPPUNIT_TEST( test_size_with_one_item );
   CPPUNIT_TEST( test_size_with_two_items );
@@ -19,7 +20,6 @@ class CharQueueTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST( test_tripple_pop_after_double_push );
   CPPUNIT_TEST( test_clear_with_nothing );
   CPPUNIT_TEST( test_clear_after_two_pushes );
-  CPPUNIT_TEST( test_this );
   CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -52,6 +52,19 @@ public:
     CPPUNIT_ASSERT_EQUAL( 'x', char_queue->pop() );
   }
 
+  void test_pop_after_two_pushes_and_a_pop() {
+    char_queue->push('x');
+    char_queue->push('y');
+    char_queue->pop();
+    CPPUNIT_ASSERT_EQUAL( 'y', char_queue->pop() );
+  }
+
+  void test_pop_after_a_push_and_a_pop() {
+    char_queue->push('x');
+    char_queue->pop();
+    CPPUNIT_ASSERT_EQUAL( '\0', char_queue->pop() );
+  }
+
   void test_size_when_empty() {
     CPPUNIT_ASSERT_EQUAL( 0, char_queue->size() );
   }
@@ -80,7 +93,7 @@ public:
     CPPUNIT_ASSERT_EQUAL( 1, char_queue->size() );
   }
 
-  void test_size_after_a_pop() {
+  void test_size_after_a_pop_when_empty() {
     char_queue->pop();
     CPPUNIT_ASSERT_EQUAL( 0, char_queue->size() );
   }
@@ -94,7 +107,6 @@ public:
   }
 
   void test_clear_with_nothing() {
-
     char_queue->clear();
     CPPUNIT_ASSERT_EQUAL( '\0', char_queue->pop() );
     CPPUNIT_ASSERT_EQUAL( 0, char_queue->size() );
@@ -107,16 +119,6 @@ public:
     char_queue->clear();
     CPPUNIT_ASSERT_EQUAL( '\0', char_queue->pop() );
     CPPUNIT_ASSERT_EQUAL( 0, char_queue->size() );
-  }
-
-  void test_this() {
-    char_queue->push('x');
-    char_queue->clear();
-    char_queue->push('f');
-
-    char mode  = char_queue->pop();
-
-    CPPUNIT_ASSERT_EQUAL( 'f', mode );
   }
 };
 
