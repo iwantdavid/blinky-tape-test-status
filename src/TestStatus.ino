@@ -57,13 +57,14 @@ bool is_color(char character) {
 }
 
 void pulse() {
-  if (mPulseInterval < 0) {
+  if (mPulseInterval <= 0) {
     LEDS.setBrightness(mBrightness);
     return;
   }
 
-  int now = (millis() / mPulseInterval) % (mBrightness * 2);
-  LEDS.setBrightness(abs(mBrightness - now));
+  int now = (millis() / mPulseInterval) % (93 * 2);
+  int phase = 93 - now;
+  LEDS.setBrightness(abs(phase * mBrightness / 93));
   LEDS.show();
 }
 
@@ -82,7 +83,7 @@ void rainbow() {
 }
 
 void set_brightness(char character) {
-  if (character < 48 and character > 57) {
+  if (character < 48 || 57 < character) {
     return;
   }
 
@@ -109,7 +110,7 @@ void set_pulse_interval(char mode) {
       mPulseInterval = 2;
       return;
     case 'p':
-      mPulseInterval = 5;
+      mPulseInterval = 4;
       return;
     case 's':
       mPulseInterval = 0;
