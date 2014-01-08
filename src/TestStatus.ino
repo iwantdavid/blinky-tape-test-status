@@ -10,61 +10,20 @@ struct CRGB leds[LED_COUNT];
 #define PIN_SIGNAL 13
 #define PIN_INPUT  10
 
-int pulse_interval;
+int mPulseInterval;
 char mColor;
+int mBrightness;
 
 void setup()
 {
-  pulse_interval = 0;
+  mPulseInterval = 0;
   mColor = 't';
+  mBrightness = 93;
 
   LEDS.addLeds<WS2811, PIN_SIGNAL, GRB>(leds, LED_COUNT); // this configures the BlinkyBoard - leave as is.
   LEDS.showColor(CRGB(0, 0, 0));
-  LEDS.setBrightness(93); // Limit max current draw to 1A
+  LEDS.setBrightness(mBrightness); // Limit max current draw to 1A
   LEDS.show();
-}
-
-bool is_color(char character) {
-  return (character == 'r' || character == 'g' || character == 'b' || character == 'y' || character == 'w');
-}
-
-void pulse() {
-  if (pulse_interval < 0) {
-    LEDS.setBrightness(93);
-    return;
-  }
-
-  int now = (millis() / pulse_interval) % 186;
-  LEDS.setBrightness(abs(93 - now));
-  LEDS.show();
-}
-
-void rainbow() {
-  int now = millis() / 50;
-  int r = now;
-  int g = now + 84;
-  int b = now + 84 + 84;
-
-  for (uint8_t i = 0; i < LED_COUNT; i++) {
-    leds[i].r = (r + i) % 254;
-    leds[i].g = (g + i) % 254;
-    leds[i].b = (b + i) % 254;
-  }
-  LEDS.show();
-}
-
-void set_color(char character) {
-  switch(character) {
-    case 'r':
-    case 'g':
-    case 'b':
-    case 'y':
-    case 'w':
-    case 't':
-    case 'x':
-      mColor = character;
-      return;
-    }
 }
 
 void color() {
@@ -93,16 +52,67 @@ void color() {
   }
 }
 
+bool is_color(char character) {
+  return (character == 'r' || character == 'g' || character == 'b' || character == 'y' || character == 'w');
+}
+
+void pulse() {
+  if (mPulseInterval < 0) {
+    LEDS.setBrightness(mBrightness);
+    return;
+  }
+
+  int now = (millis() / mPulseInterval) % (mBrightness * 2);
+  LEDS.setBrightness(abs(mBrightness - now));
+  LEDS.show();
+}
+
+void rainbow() {
+  int now = millis() / 50;
+  int r = now;
+  int g = now + 84;
+  int b = now + 84 + 84;
+
+  for (uint8_t i = 0; i < LED_COUNT; i++) {
+    leds[i].r = (r + i) % 254;
+    leds[i].g = (g + i) % 254;
+    leds[i].b = (b + i) % 254;
+  }
+  LEDS.show();
+}
+
+void set_brightness(char character) {
+  if (character < 48 and character > 57) {
+    return;
+  }
+
+  mBrightness = (character - 48) * 10;
+}
+
+void set_color(char character) {
+  switch(character) {
+    case 'r':
+    case 'g':
+    case 'b':
+    case 'y':
+    case 'w':
+    case 't':
+    case 'x':
+      mColor = character;
+      return;
+    }
+}
+
 void set_pulse_interval(char mode) {
   switch(mode) {
     case 'f':
-      pulse_interval = 2;
+      mPulseInterval = 2;
       return;
     case 'p':
-      pulse_interval = 5;
+      mPulseInterval = 5;
       return;
     case 's':
-      pulse_interval = 0;
+      mPulseInterval = 0;
       return;
   }
 }
@@ -125,6 +135,7 @@ void test_sequence() {
 void loop() {
   while(Serial.available() > 0) {
     char character = Serial.read();
+    set_brightness(character);
     set_color(character);
     set_pulse_interval(character);
   }
