@@ -1,6 +1,6 @@
-# blinky-tape-projects
+# blinky-tape-test-status
 
-Collections of projects that use blinky-tape
+Blinky Tape sketch for high-performance TDD/BDD notifications
 
 ## Install
 
