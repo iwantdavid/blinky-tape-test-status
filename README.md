@@ -25,6 +25,7 @@ Collections of projects that use blinky-tape
     s : Solid
     t : Test Pattern
     x : Rainbow Pattern
+    0 - 9 : Brightness (0-100%)
 
 
 ## Development Setup
