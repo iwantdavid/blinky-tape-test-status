@@ -13,12 +13,15 @@ struct CRGB leds[LED_COUNT];
 int mPulseInterval;
 char mColor;
 int mBrightness;
+int mTimer;
 
 void setup()
 {
   mPulseInterval = 0;
-  mColor = 't';
+  mColor = ' ';
+  mTimer = 30;
   mBrightness = 93;
+  timer();
 
   LEDS.addLeds<WS2811, PIN_SIGNAL, GRB>(leds, LED_COUNT); // this configures the BlinkyBoard - leave as is.
   LEDS.showColor(CRGB(0, 0, 0));
@@ -109,6 +112,9 @@ void set_pulse_interval(char mode) {
     case 'f':
       mPulseInterval = 2;
       return;
+    case 'k':
+      mPulseInterval = 1;
+      return;
     case 'p':
       mPulseInterval = 4;
       return;
@@ -133,14 +139,48 @@ void test_sequence() {
   LEDS.show();
 }
 
+void set_timer(char character) {
+  switch(character) {
+    case 'u':
+      mTimer = 30;
+      return;
+    case 'i':
+      mTimer = 2;
+      return;
+  }
+}
+
+void timer() {
+  int now = millis() / 600;
+  switch(mTimer) {
+    case 30:
+      mColor = ' ';
+      for (uint8_t i = 0; i < LED_COUNT; i++) {
+        if (i < now) {
+          leds[i].r = 254;
+          leds[i].g = 254;
+          leds[i].b = 254;
+        } else {
+          leds[i].r = 0;
+          leds[i].g = 0;
+          leds[i].b = 0;
+        }
+      }
+      LEDS.show();
+      return;
+  }
+}
+
 void loop() {
   while(Serial.available() > 0) {
     char character = Serial.read();
     set_brightness(character);
     set_color(character);
     set_pulse_interval(character);
+    set_timer(character);
   }
 
   color();
   pulse();
+  timer();
 }
